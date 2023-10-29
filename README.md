@@ -63,3 +63,34 @@ This commit introduces the user profile retrieval functionality in the codebase.
 - Provides a response with the user's profile data.
 
 This feature allows users to access their profile information.
+
+# Implement admin dashboard functionality
+
+This commit introduces the admin dashboard functionality in the codebase. Some Important part of this commit: -
+
+- Fetches admin data based on the user's ID.
+- Validates the presence of an admin user.
+- Retrieves admission records based on the specified course.
+- Provides a response with admission data.
+
+This feature enables administrators to view admission records for a specific course.
+
+# Implement admission confirmation update functionality
+
+This commit introduces the functionality to update the confirmation status of admission applications.
+
+- Fetches admin data based on the user's ID.
+- Updates the admission confirmation status based on the provided query parameter.
+- Provides a response indicating whether the application was accepted or rejected.
+
+This feature allows administrators to manage admission applications.
+
+# chore: Transition from backend to frontend development
+
+```
+In this commit, we are shifting our focus from backend development to frontend development in line with project requirements. We will now primarily work on the user interface, user experience, and other frontend-related tasks.
+
+During this transition, we will coordinate closely with the backend development team to ensure that our frontend work aligns with the necessary API endpoints and data requirements.
+
+This change in focus will help us deliver a fully integrated and functional application that meets both frontend and backend requirements.
+```
