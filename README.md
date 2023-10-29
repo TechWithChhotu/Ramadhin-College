@@ -94,3 +94,7 @@ During this transition, we will coordinate closely with the backend development 
 
 This change in focus will help us deliver a fully integrated and functional application that meets both frontend and backend requirements.
 ```
+
+# `Frontend Started`
+
+## basic vite app & teilwind css setup
