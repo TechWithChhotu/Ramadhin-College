@@ -1,5 +1,6 @@
 import { User } from "../models/user.models.js";
 import AppError from "../utils/error.utils.js";
+import { Admission } from "../models/admission.models.js";
 
 const pingPong = (req, res) => {
   res.send("pong");
@@ -98,15 +99,25 @@ const getUser = async (req, res, next) => {
       return next(new AppError("Profile :: User doesn`t exist", 404));
     }
 
-    res.status(200).json({
-      success: true,
-      message: "get user profile successfully",
-      data: userExist,
-    });
+    const userAdmissionData = await Admission.find({ email: userExist.email });
+
+    if (userAdmissionData) {
+      res.status(200).json({
+        success: true,
+        message: "get user profile successfully",
+        data: userAdmissionData,
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "get user profile successfully",
+        data: userExist,
+      });
+    }
   } catch (err) {
     res.status(404).json({
       success: false,
-      message: "getUser :: Something wrong!!",
+      message: "Profile :: Something wrong!!",
     });
   }
 };

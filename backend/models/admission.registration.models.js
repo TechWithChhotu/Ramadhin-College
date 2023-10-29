@@ -1,6 +1,6 @@
 import mongoose, { Schema, model, mongo } from "mongoose";
 
-const admissionShema = new Schema(
+const registrationShema = new Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -71,4 +71,7 @@ const admissionShema = new Schema(
 
   { timestamps: true }
 );
-export const Admission = model("Admission", admissionShema);
+export const AdmissionRegistration = model(
+  "AdmissionRegistration",
+  registrationShema
+);

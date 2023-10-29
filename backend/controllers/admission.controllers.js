@@ -1,10 +1,11 @@
 import AppError from "../utils/error.utils.js";
 import { User } from "../models/user.models.js";
+import { AdmissionRegistration } from "../models/admission.registration.models.js";
 import { Admission } from "../models/admission.models.js";
 import cloudinary from "cloudinary";
 
-/*======================Admission Controller======================*/
-const admission = async (req, res, next) => {
+/*======================Admission Registration Controller======================*/
+const admissionRegistration = async (req, res, next) => {
   try {
     const {
       course,
@@ -21,21 +22,6 @@ const admission = async (req, res, next) => {
       address,
     } = req.body;
 
-    // console.log(
-    //   user,
-    //   course,
-    //   state,
-    //   name,
-    //   mob,
-    //   email,
-    //   aadharNo,
-    //   gender,
-    //   fatherName,
-    //   motherName,
-    //   gEmail,
-    //   gPhone,
-    //   address
-    // );
     /*----------------------Data Validation----------------------*/
     if (
       !course ||
@@ -57,7 +43,7 @@ const admission = async (req, res, next) => {
       return next(new AppError("Account doesn`t exist with this email"));
     }
 
-    const newAdmission = await Admission.create({
+    const newAdmission = await AdmissionRegistration.create({
       course,
       state,
       name,
@@ -84,7 +70,6 @@ const admission = async (req, res, next) => {
     }
 
     /*----------------------upload avatar----------------------*/
-    console.log("req.file ", req.file);
     if (req.file) {
       try {
         const result = await cloudinary.v2.uploader.upload(req.file.path, {
@@ -98,9 +83,6 @@ const admission = async (req, res, next) => {
         if (result) {
           newAdmission.avatar.public_id = result.public_id;
           newAdmission.avatar.secure_url = result.secure_url;
-
-          // remove file from local server
-          //   fs.rm(`uploads/${req.file.filename}`);
         }
       } catch (err) {
         new AppError(`file not uploaded please try again, ERROR: ${err}`, 500);
@@ -121,4 +103,68 @@ const admission = async (req, res, next) => {
   }
 };
 
-export { admission };
+/*======================Admission Controller======================*/
+const admission = async (req, res, next) => {
+  try {
+    const userEmail = req.user.email;
+
+    const response = await AdmissionRegistration.findOne({ email: userEmail });
+    const {
+      course,
+      state,
+      name,
+      mob,
+      email,
+      aadharNo,
+      gender,
+      fatherName,
+      motherName,
+      gEmail,
+      gPhone,
+      address,
+    } = response;
+
+    const newUser = await User.findOne({ email });
+    if (!newUser) {
+      return next(new AppError("Account doesn`t exist with this email"));
+    }
+
+    const newAdmission = await Admission.create({
+      course,
+      state,
+      name,
+      mob,
+      email,
+      aadharNo,
+      gender,
+      fatherName,
+      motherName,
+      gEmail,
+      gPhone,
+      address,
+      avatar: {
+        public_id: response.avatar.public_id,
+        secure_url: response.avatar.secure_url,
+      },
+    });
+
+    if (!newAdmission) {
+      return next(
+        new AppError("Admission :: fail to process, please try agian")
+      );
+    }
+
+    res.status(201).json({
+      success: true,
+      message: "data received",
+      data: newAdmission,
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: `Admission :: ERROR: ${error.message}`,
+    });
+  }
+};
+
+export { admissionRegistration, admission };
