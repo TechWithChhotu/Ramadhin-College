@@ -55,11 +55,15 @@ const admissionShema = new Schema(
       type: String,
       required: [true, "Address is required"],
     },
+    confirmation: {
+      type: Boolean,
+      default: false,
+    },
     avatar: {
-      public_url: {
+      public_id: {
         type: String,
       },
-      secured_url: {
+      secure_url: {
         type: String,
       },
     },

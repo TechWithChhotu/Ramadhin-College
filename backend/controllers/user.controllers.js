@@ -89,4 +89,25 @@ const signIn = async (req, res, next) => {
       .json({ success: false, message: `SignIn :: Error: ${err.message}` });
   }
 };
-export { pingPong, signUp, signIn };
+
+const getUser = async (req, res, next) => {
+  try {
+    const userExist = await User.findById(req.user.id);
+
+    if (!userExist) {
+      return next(new AppError("Profile :: User doesn`t exist", 404));
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "get user profile successfully",
+      data: userExist,
+    });
+  } catch (err) {
+    res.status(404).json({
+      success: false,
+      message: "getUser :: Something wrong!!",
+    });
+  }
+};
+export { pingPong, signUp, signIn, getUser };
