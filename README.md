@@ -98,3 +98,5 @@ This change in focus will help us deliver a fully integrated and functional appl
 # `Frontend Started`
 
 ## basic vite app & teilwind css setup
+
+# Work on Header, Footer & create store & slice
